@@ -89,7 +89,7 @@ pub trait ConfigFile: Sized {
             Err(e) => {
                 let msg = format_errors(&e);
                 Err(Self::Error::from(Error::FileSyntax(msg)))
-            }
+            },
         }
     }
 
@@ -137,7 +137,7 @@ impl ParseInto<net::SocketAddrV4> for toml::Value {
                     Ok(addr) => {
                         *out = addr;
                         Ok(true)
-                    }
+                    },
                     Err(_) => Err(Error::InvalidSocketAddrV4(field)),
                 }
             } else {
@@ -157,7 +157,7 @@ impl ParseInto<net::Ipv4Addr> for toml::Value {
                     Ok(addr) => {
                         *out = addr;
                         Ok(true)
-                    }
+                    },
                     Err(_) => Err(Error::InvalidIpv4Addr(field)),
                 }
             } else {
@@ -362,7 +362,8 @@ impl ParseInto<Vec<u64>> for toml::Value {
 impl ParseInto<BTreeMap<String, String>> for toml::Value {
     fn parse_into(&self, field: &'static str, out: &mut BTreeMap<String, String>) -> Result<bool> {
         if let Some(val) = self.lookup(field) {
-            let buf: BTreeMap<String, String> = val.as_table()
+            let buf: BTreeMap<String, String> = val
+                .as_table()
                 .unwrap()
                 .iter()
                 .map(|(k, v)| (k.to_string(), v.as_str().unwrap().to_string()))
@@ -376,15 +377,13 @@ impl ParseInto<BTreeMap<String, String>> for toml::Value {
 }
 
 impl ParseInto<Vec<BTreeMap<String, String>>> for toml::Value {
-    fn parse_into(&self,
-                  field: &'static str,
-                  out: &mut Vec<BTreeMap<String, String>>)
-                  -> Result<bool> {
+    fn parse_into(&self, field: &'static str, out: &mut Vec<BTreeMap<String, String>>) -> Result<bool> {
         if let Some(val) = self.lookup(field) {
             if let Some(v) = val.as_slice() {
                 let mut buf = vec![];
                 for m in v.iter() {
-                    let map: BTreeMap<String, String> = m.as_table()
+                    let map: BTreeMap<String, String> = m
+                        .as_table()
                         .unwrap()
                         .iter()
                         .map(|(k, v)| (k.to_string(), v.as_str().unwrap().to_string()))

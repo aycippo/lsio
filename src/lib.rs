@@ -14,22 +14,24 @@
 //
 
 // NOTE: This attribute only needs to be set once.
-#![doc(html_logo_url = "https://lambdastackio.github.io/static/images/lambdastack-200x200.png",
-       html_favicon_url = "https://lambdastackio.github.io/static/images/favicon.ico",
-       html_root_url = "https://lambdastackio.github.io/lsio/lsio/index.html")]
+#![doc(
+    html_logo_url = "https://lambdastackio.github.io/static/images/lambdastack-200x200.png",
+    html_favicon_url = "https://lambdastackio.github.io/static/images/favicon.ico",
+    html_root_url = "https://lambdastackio.github.io/lsio/lsio/index.html"
+)]
 
+extern crate errno;
+extern crate libc;
 extern crate rustc_serialize;
 extern crate term;
 extern crate toml;
 extern crate url;
-extern crate libc;
-extern crate errno;
 
 #[macro_use]
 pub mod macros;
 pub mod commands;
-pub mod error;
 pub mod config;
+pub mod convert;
+pub mod error;
 pub mod prompts;
 pub mod system;
-pub mod convert;

@@ -14,8 +14,8 @@
 
 use std::collections::BTreeMap;
 
-use toml;
 use rustc_serialize::json::Json;
+use toml;
 
 pub fn toml_to_json(value: toml::Value) -> Json {
     match value {

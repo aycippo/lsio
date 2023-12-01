@@ -15,8 +15,8 @@
 #![allow(dead_code)]
 
 use std::error;
-use std::io;
 use std::fmt;
+use std::io;
 use std::num;
 use std::result;
 use std::str;
@@ -66,27 +66,27 @@ impl fmt::Display for Error {
             Error::FileIO(ref e) => format!("Error reading file: {}", e),
             Error::FileNotFound(ref e) => format!("File not found at: {}", e),
             Error::FileSyntax(ref e) => {
-                format!("Syntax errors while parsing file:\n\n{}",
-                        e)
-            }
+                format!("Syntax errors while parsing file:\n\n{}", e)
+            },
             Error::InvalidArray(ref f) => {
                 format!("Invalid array of values, field={}", f)
-            }
+            },
             Error::InvalidIpv4Addr(ref f) => {
-                format!("Invalid Ipv4 address, field={}. (example: \"127.0.0.0\")",
-                        f)
-            }
+                format!("Invalid Ipv4 address, field={}. (example: \"127.0.0.0\")", f)
+            },
             Error::InvalidSocketAddrV4(ref f) => {
-                format!("Invalid Ipv4 network address pair, field={}. (example: \
+                format!(
+                    "Invalid Ipv4 network address pair, field={}. (example: \
                          \"127.0.0.0:8080\")",
-                        f)
-            }
+                    f
+                )
+            },
             Error::InvalidString(ref f) => {
                 format!("Invalid string value, field={}.", f)
-            }
+            },
             Error::InvalidUrl(ref f) => {
                 format!("Invalid URL value, field={}.", f)
-            }
+            },
             Error::IO(ref err) => format!("{}", err),
             Error::IPFailed => format!("Failed to discover this hosts IP address"),
             Error::ParseIntError(ref e) => format!("{}", e),
@@ -105,21 +105,11 @@ impl error::Error for Error {
             Error::FileIO(_) => "Unable to read the raw contents of file",
             Error::FileNotFound(_) => "File not found",
             Error::FileSyntax(_) => "Error parsing contents of file",
-            Error::InvalidArray(_) => {
-                "Invalid array of values encountered while parsing file"
-            }
-            Error::InvalidIpv4Addr(_) => {
-                "Invalid Ipv4 network address encountered while parsing file"
-            }
-            Error::InvalidSocketAddrV4(_) => {
-                "Invalid Ipv4 network address pair encountered while parsing file"
-            }
-            Error::InvalidString(_) => {
-                "Invalid string value encountered while parsing a file"
-            }
-            Error::InvalidUrl(_) => {
-                "Invalid URL value encountered while parsing file"
-            }
+            Error::InvalidArray(_) => "Invalid array of values encountered while parsing file",
+            Error::InvalidIpv4Addr(_) => "Invalid Ipv4 network address encountered while parsing file",
+            Error::InvalidSocketAddrV4(_) => "Invalid Ipv4 network address pair encountered while parsing file",
+            Error::InvalidString(_) => "Invalid string value encountered while parsing a file",
+            Error::InvalidUrl(_) => "Invalid URL value encountered while parsing file",
             Error::IO(ref err) => err.description(),
             Error::IPFailed => "Failed to discover this hosts IP address",
             Error::ParseIntError(_) => "Failed to parse an integer from a string!",

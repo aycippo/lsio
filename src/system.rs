@@ -19,9 +19,9 @@ use std::mem;
 use std::net::{IpAddr, UdpSocket};
 use std::str;
 
-use libc;
 use errno::errno;
 use error::{Error, Result};
+use libc;
 
 static GOOGLE_DNS: &'static str = "8.8.8.8:53";
 
@@ -30,12 +30,12 @@ static GOOGLE_DNS: &'static str = "8.8.8.8:53";
 pub fn ip(dns: &str) -> Result<IpAddr> {
     let socket = try!(UdpSocket::bind("0.0.0.0:0"));
     let ip = format!("{}:53", dns);
-    let _ = try!(socket.connect(if dns.is_empty() {GOOGLE_DNS} else {&ip}));
+    let _ = try!(socket.connect(if dns.is_empty() { GOOGLE_DNS } else { &ip }));
     let addr = try!(socket.local_addr());
     Ok(addr.ip())
 }
 
-extern {
+extern "C" {
     pub fn gethostname(name: *mut libc::c_char, size: libc::size_t) -> libc::c_int;
 }
 
@@ -43,20 +43,14 @@ pub fn hostname() -> Result<String> {
     let len = 255;
     let mut buf = Vec::<u8>::with_capacity(len);
     let ptr = buf.as_mut_slice().as_mut_ptr();
-    let err = unsafe {
-        gethostname(ptr as *mut libc::c_char, len as libc::size_t)
-    };
+    let err = unsafe { gethostname(ptr as *mut libc::c_char, len as libc::size_t) };
     match err {
         0 => {
-            let slice = unsafe {
-                CStr::from_ptr(ptr as *const libc::c_char)
-            };
+            let slice = unsafe { CStr::from_ptr(ptr as *const libc::c_char) };
             let s = try!(slice.to_str());
             Ok(s.to_string())
-        }
-        _ => {
-            Err(Error::IPFailed)
-        }
+        },
+        _ => Err(Error::IPFailed),
     }
 }
 
